@@ -1,7 +1,7 @@
 package org.example;
 
 public class StringTypeQualifier {
-    private static boolean isInteger(String input) {
+    public static boolean isInteger(String input) {
         try {
             Integer.parseInt(input);
             return true;
@@ -10,7 +10,7 @@ public class StringTypeQualifier {
         }
     }
 
-    private static boolean isDecimal(String input) {
+    public static boolean isDecimal(String input) {
         try {
             Double.parseDouble(input);
             return input.contains(".") && !input.toLowerCase().contains("e");
@@ -19,7 +19,7 @@ public class StringTypeQualifier {
         }
     }
 
-    private static boolean isScientificNotation(String input) {
+    public static boolean isScientificNotation(String input) {
         try {
             Double.parseDouble(input);
             return input.toLowerCase().contains("e");

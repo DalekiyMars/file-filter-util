@@ -10,4 +10,10 @@ public class Constants {
         add("lpt0-lpt9");
         add("con");
     }};
+
+    public static class BaseFileNames{
+        public static final String FILE_WITH_STRINGS = "strings.txt";
+        public static final String FILE_WITH_INTEGERS = "integers.txt";
+        public static final String FILE_WITH_FLOATS = "floats.txt";
+    }
 }
