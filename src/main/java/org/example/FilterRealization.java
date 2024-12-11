@@ -1,33 +1,27 @@
 package org.example;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static org.example.StringTypeQualifier.*;
 
 public class FilterRealization {
-    public List<String> getStringList() {
-        return stringList;
-    }
-
-    public List<String> getIntegerList() {
-        return integerList;
-    }
-
-    public List<String> getFloatList() {
-        return floatList;
-    }
-
     private final List<String> stringList = new ArrayList<>();
     private final List<String> integerList = new ArrayList<>();
     private final List<String> floatList = new ArrayList<>();
-    public FilterRealization(List<String> filePaths){
+    private String fileNameWithStrings = Constants.BaseFileNames.FILE_WITH_STRINGS;
+    private String fileNameWithInts = Constants.BaseFileNames.FILE_WITH_INTEGERS;
+    private String fileNameWithFloat = Constants.BaseFileNames.FILE_WITH_FLOATS;
+    private final Map<String, String> activeFlags = new HashMap<>();
+
+
+
+    public FilterRealization(List<String> args){
         try {
-            List<String> allLines = TextFileReaderWriter.collectLinesFromFiles(filePaths);
-            filterFiles(allLines);
+            fillActualFlags(args);
+            filterFiles(TextFileReaderWriter.collectLinesFromFiles(args));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.err.println("Error of reading content from files");
         }
     }
 
@@ -36,7 +30,6 @@ public class FilterRealization {
     }
 
     public static void changeOutputFileName(){
-
     }
 
     public static void writeShortStatistics(){
@@ -61,5 +54,57 @@ public class FilterRealization {
                 stringList.add(input);
             }
         }
+    }
+
+    public void realizeFlags(String[] args) {
+
+    }
+
+    private void fillActualFlags(List<String> args){
+        for (String arg : args) {
+            Pair<String, Boolean> pair = Flags.checkFlag(arg);
+            if (pair != null) {
+                activeFlags.put(arg, takeNextParam(args, arg));
+            }
+        }
+    }
+    private String takeNextParam(List<String> args, String arg){
+        return args.get(args.indexOf(arg) + 1);
+    }
+
+    public void setFileNameWithStrings(String fileNameWithStrings) {
+        this.fileNameWithStrings = fileNameWithStrings;
+    }
+
+    public void setFileNameWithInts(String fileNameWithInts) {
+        this.fileNameWithInts = fileNameWithInts;
+    }
+
+    public void setFileNameWithFloat(String fileNameWithFloat) {
+        this.fileNameWithFloat = fileNameWithFloat;
+    }
+
+    public String getFileNameWithStrings() {
+        return fileNameWithStrings;
+    }
+
+    public String getFileNameWithInts() {
+        return fileNameWithInts;
+    }
+
+    public String getFileNameWithFloat() {
+        return fileNameWithFloat;
+    }
+
+    public List<String> getStringList() {
+        return stringList;
+    }
+
+    public List<String> getIntegerList() {
+        return integerList;
+    }
+
+    public List<String> getFloatList() {
+        return floatList;
     }
 }

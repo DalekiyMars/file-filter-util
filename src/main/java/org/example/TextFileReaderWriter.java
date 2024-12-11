@@ -10,6 +10,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TextFileReaderWriter {
+    public static void createAndFillFiles(FilterRealization filterRealization){
+        writeListToFile(filterRealization.getFileNameWithStrings(), filterRealization.getStringList());
+        writeListToFile(filterRealization.getFileNameWithInts(), filterRealization.getIntegerList());
+        writeListToFile(filterRealization.getFileNameWithFloat(), filterRealization.getFloatList());
+    }
+
     public static List<String> collectLinesFromFiles(List<String> fileNames) throws IOException {
         List<String> allLines = new ArrayList<>();
 
@@ -28,17 +34,17 @@ public class TextFileReaderWriter {
         var textFiles = new ArrayList<>(inputList.stream()
                 .filter(item -> item.endsWith(".txt"))
                 .toList());
-        int listLength = textFiles.size();
 
+        int listLength = textFiles.size();
         for (int i = 0; i < listLength; i++) {
             textFiles.set(i, getFileDir(textFiles.get(i)));
         }
         return textFiles;
     }
 
-    public static <T> void writeListToFile(String fileName, List<T> list) {
+    private static <T> void writeListToFile(String fileName, List<T> list) {
         if (list == null || list.isEmpty()) {
-            System.out.println("Список пустой. Файл " + fileName + " не будет создан.");
+            System.out.println("List is empty. File " + fileName + " wouldn't be created.");
             return;
         }
 
@@ -47,12 +53,12 @@ public class TextFileReaderWriter {
                 try {
                     writer.write(item.toString() + "\n");
                 } catch (IOException e) {
-                    System.err.println("Ошибка при записи в файл: " + fileName);
+                    System.err.println("Error of file writing: " + fileName);
                 }
             });
-            System.out.println("Данные успешно записаны в файл: " + fileName);
+            System.out.println("Data written to file: " + fileName);
         } catch (IOException e) {
-            System.err.println("Ошибка c файлом: " + fileName);
+            System.err.println("File error: " + fileName);
         }
     }
 
