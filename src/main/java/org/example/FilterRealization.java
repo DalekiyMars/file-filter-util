@@ -1,5 +1,6 @@
 package org.example;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
@@ -9,39 +10,31 @@ public class FilterRealization {
     private final List<String> stringList = new ArrayList<>();
     private final List<String> integerList = new ArrayList<>();
     private final List<String> floatList = new ArrayList<>();
-    private String fileNameWithStrings = Constants.BaseFileNames.FILE_WITH_STRINGS;
-    private String fileNameWithInts = Constants.BaseFileNames.FILE_WITH_INTEGERS;
-    private String fileNameWithFloat = Constants.BaseFileNames.FILE_WITH_FLOATS;
-    private final Map<String, String> activeFlags = new HashMap<>();
-
+    public final Map<String, String> activeFlags = new HashMap<>();
+    private static StringBuilder outputDirectory;
+    private static StringBuilder prefix = new StringBuilder();
 
 
     public FilterRealization(List<String> args){
         try {
             fillActualFlags(args);
             filterFiles(TextFileReaderWriter.collectLinesFromFiles(args));
+            realizeFlags();
         } catch (IOException e) {
             System.err.println("Error of reading content from files");
         }
     }
 
-    public static void changeOutputFileDirectory(){
-
+    public static void printShortStatistic() {
+        //TODO вывод короткой статистики
     }
 
-    public static void changeOutputFileName(){
+    public static void printFullStatistic() {
+        //TODO вывод полной статистики
     }
 
-    public static void writeShortStatistics(){
-
-    }
-
-    public static void writeFullStatistics(){
-
-    }
-
-    public static void writeToOldFile(){
-
+    public static void appendExistedFiles() {
+        //TODO добавление в существующий файл
     }
 
     private void filterFiles(List<String> inputStrings){
@@ -56,44 +49,67 @@ public class FilterRealization {
         }
     }
 
-    public void realizeFlags(String[] args) {
-
+    public void realizeFlags() {
+        for (var argument :
+                activeFlags.keySet()) {
+            Flags flag = Flags.getFlagByName(argument);
+            if (Objects.requireNonNull(flag).hasPair()) {
+                flag.execute(activeFlags.get(argument));
+            } else {
+                flag.execute(null);
+            }
+        }
     }
 
     private void fillActualFlags(List<String> args){
         for (String arg : args) {
-            Pair<String, Boolean> pair = Flags.checkFlag(arg);
-            if (pair != null) {
+            var flag = Flags.getFlagByName(arg);
+            if (flag != null && flag.hasPair()) {
                 activeFlags.put(arg, takeNextParam(args, arg));
+            } else if (flag != null) {
+                activeFlags.put(arg, null);
             }
         }
     }
+
+    public static void setOutputDirectory(String directory) throws IOException {
+        if (TextFileReaderWriter.doesDirectoryExist(directory)) {
+            FilterRealization.outputDirectory = new StringBuilder(directory);
+            if (!(outputDirectory.lastIndexOf(File.separator) == outputDirectory.length()-1)){
+                outputDirectory.append(File.separator);
+            }
+        } else {
+            System.err.println("Directory not exists! Files will be saved to base directory");
+            FilterRealization.outputDirectory = new StringBuilder(TextFileReaderWriter.getFileDir());
+        }
+    }
+
     private String takeNextParam(List<String> args, String arg){
-        return args.get(args.indexOf(arg) + 1);
+        try {
+            return args.get(args.indexOf(arg) + 1);
+        } catch (Exception e){
+            return null;
+        }
     }
 
-    public void setFileNameWithStrings(String fileNameWithStrings) {
-        this.fileNameWithStrings = fileNameWithStrings;
-    }
-
-    public void setFileNameWithInts(String fileNameWithInts) {
-        this.fileNameWithInts = fileNameWithInts;
-    }
-
-    public void setFileNameWithFloat(String fileNameWithFloat) {
-        this.fileNameWithFloat = fileNameWithFloat;
+    public static void setPrefix(StringBuilder prefix) {
+        FilterRealization.prefix = prefix;
     }
 
     public String getFileNameWithStrings() {
-        return fileNameWithStrings;
+        return getFileDirWithPrefix() + Constants.BaseFileNames.FILE_WITH_STRINGS;
     }
 
     public String getFileNameWithInts() {
-        return fileNameWithInts;
+        return getFileDirWithPrefix() + Constants.BaseFileNames.FILE_WITH_INTEGERS;
     }
 
     public String getFileNameWithFloat() {
-        return fileNameWithFloat;
+        return getFileDirWithPrefix() + Constants.BaseFileNames.FILE_WITH_FLOATS;
+    }
+
+    private String getFileDirWithPrefix(){
+        return outputDirectory.toString() + prefix;
     }
 
     public List<String> getStringList() {

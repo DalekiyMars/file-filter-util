@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,7 +38,7 @@ public class TextFileReaderWriter {
 
         int listLength = textFiles.size();
         for (int i = 0; i < listLength; i++) {
-            textFiles.set(i, getFileDir(textFiles.get(i)));
+            textFiles.set(i, getFileDir() + textFiles.get(i));
         }
         return textFiles;
     }
@@ -63,10 +64,21 @@ public class TextFileReaderWriter {
     }
 
 
-    private static String getFileDir(String name) throws IOException {
+    public static String getFileDir() throws IOException {
         String patch = Main.class.getProtectionDomain().getCodeSource().getLocation().getPath();
         File file = new File(patch);
         String jarPath = file.getCanonicalPath();
-        return jarPath.substring( 0, jarPath.lastIndexOf( File.separator )) + File.separator + name;
+        return jarPath.substring( 0, jarPath.lastIndexOf( File.separator )) + File.separator;
+    }
+
+    /**
+     * Проверяет, существует ли директория по указанному пути.
+     *
+     * @param directoryPath Путь к директории
+     * @return true, если директория существует, иначе false
+     */
+    public static boolean doesDirectoryExist(String directoryPath) {
+        Path path = Paths.get(directoryPath);
+        return Files.exists(path) && Files.isDirectory(path);
     }
 }
