@@ -1,4 +1,4 @@
-package org.example;
+package org.example.filter;
 
 import org.example.dataConfigs.FloatDataConfig;
 import org.example.dataConfigs.IntDataConfig;

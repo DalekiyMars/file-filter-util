@@ -1,6 +1,6 @@
 package org.example.handler;
 
-import org.example.Main;
+import org.example.entryPoint.Main;
 
 import java.io.BufferedWriter;
 import java.io.File;

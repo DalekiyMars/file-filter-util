@@ -1,4 +1,6 @@
-package org.example;
+package org.example.entryPoint;
+
+import org.example.filter.FileFilterRealization;
 
 public class Main {
     public static void main(String[] args) {
