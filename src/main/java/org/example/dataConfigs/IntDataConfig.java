@@ -14,6 +14,10 @@ public class IntDataConfig implements DataConfig {
         this.integers = integers;
     }
 
+    public List<Integer> getIntegers(){
+        return this.integers;
+    }
+
     @Override
     public void process(String outputDir, String prefix, boolean append, boolean shortStats, boolean fullStats) {
         if (integers.isEmpty()) return;
@@ -26,10 +30,10 @@ public class IntDataConfig implements DataConfig {
         }
 
         if (fullStats) {
-            System.out.println("Integers: min = " + Collections.min(integers) + ",\n        " +
-                    "max = " + Collections.max(integers) + ",\n        " +
-                    "sum = " + integers.stream().mapToInt(Integer::intValue).sum() + ",\n        " +
-                    "average value = " + integers.stream().mapToInt(Integer::intValue).average().orElse(0));
+            System.out.println("Integers: min = " + Collections.min(integers) + ",\n" +
+                    "    max = " + Collections.max(integers) + ",\n" +
+                    "    sum = " + integers.stream().mapToInt(Integer::intValue).sum() + ",\n" +
+                    "    average value = " + integers.stream().mapToInt(Integer::intValue).average().orElse(0));
         }
     }
 }

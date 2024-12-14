@@ -14,6 +14,10 @@ public class FloatDataConfig implements DataConfig {
         this.floats = floats;
     }
 
+    public List<Float> getFloats(){
+        return this.floats;
+    }
+
     @Override
     public void process(String outputDir, String prefix, boolean append, boolean shortStats, boolean fullStats) {
         if (floats.isEmpty()) return;
@@ -26,10 +30,10 @@ public class FloatDataConfig implements DataConfig {
         }
 
         if (fullStats) {
-            System.out.println("Floats: min = " + Collections.min(floats) + ",\n        " +
-                    "max = " + Collections.max(floats) + ",\n        " +
-                    "sum = " + floats.stream().mapToDouble(Float::doubleValue).sum() + ",\n        " +
-                    "average value = " + floats.stream().mapToDouble(Float::doubleValue).average().orElse(0));
+            System.out.println("Floats: min = " + Collections.min(floats) + ",\n " +
+                    "   max = " + Collections.max(floats) + ",\n " +
+                    "   sum = " + floats.stream().mapToDouble(Float::doubleValue).sum() + ",\n " +
+                    "   average value = " + floats.stream().mapToDouble(Float::doubleValue).average().orElse(0));
         }
     }
 }

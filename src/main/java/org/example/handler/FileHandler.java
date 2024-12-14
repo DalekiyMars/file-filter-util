@@ -13,12 +13,12 @@ import java.util.List;
 
 public class FileHandler {
     /**
-     * Writes a list of data to a file.
+     * Записывает данные в файл
      *
-     * @param outputDir The directory to write the file.
-     * @param fileName  The name of the file.
-     * @param data      The data to write to the file.
-     * @param append    Whether to append to the file or overwrite it.
+     * @param outputDir Директория для сохранения.
+     * @param fileName  Название файла.
+     * @param data      Данные для записи в файл.
+     * @param append    Добавлять ли данные в старый файл.
      */
     public static void writeToFile(String outputDir, String fileName, List<?> data, boolean append) {
         File file = new File(outputDir, fileName);
@@ -34,10 +34,10 @@ public class FileHandler {
     }
 
     /**
-     * Reads all lines from a file.
+     * Прочитать строки из файла.
      *
-     * @param fileName The name of the file to read.
-     * @return A list of strings representing the lines of the file.
+     * @param fileName Название файла для прочтения.
+     * @return Список строк из файла.
      */
     public static List<String> readFile(String fileName) {
         try {
@@ -49,6 +49,11 @@ public class FileHandler {
         }
     }
 
+    /**
+     * Получить директорию из которой вызывается entryPoint.
+     *
+     * @return директория исполяемого файла.
+     */
     public static String getFileDir() {
         String patch = Main.class.getProtectionDomain().getCodeSource().getLocation().getPath();
         File file = new File(patch);

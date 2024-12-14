@@ -14,6 +14,10 @@ public class StringDataConfig implements DataConfig {
         this.strings = strings;
     }
 
+    public List<String> getStrings(){
+        return this.strings;
+    }
+
     @Override
     public void process(String outputDir, String prefix, boolean append, boolean shortStats, boolean fullStats) {
         if (strings.isEmpty()) return;
@@ -28,8 +32,8 @@ public class StringDataConfig implements DataConfig {
         if (fullStats) {
             String longest = strings.stream().max(Comparator.comparingInt(String::length)).orElse("");
             String shortest = strings.stream().min(Comparator.comparingInt(String::length)).orElse("");
-            System.out.println("Strings: longest = " + longest + " (length = " + longest.length() + "),\n        " +
-                    "shortest = " + shortest + " (length=" + shortest.length() + ")");
+            System.out.println("Strings: longest = " + longest + " (length = " + longest.length() + "),\n" +
+                    "   shortest = " + shortest + " (length=" + shortest.length() + ")");
         }
     }
 }

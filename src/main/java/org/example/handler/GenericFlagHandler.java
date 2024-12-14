@@ -8,10 +8,8 @@ public class GenericFlagHandler implements FlagHandler {
     private final boolean parameter;
 
     /**
-     * Constructor for a generic flag handler.
-     *
-     * @param key           The key to store the flag value in the context.
-     * @param parameter Whether the flag requires an associated value.
+     * @param key           Ключ
+     * @param parameter Требуется ли флагу аргумент
      */
     public GenericFlagHandler(String key, boolean parameter) {
         this.key = key;

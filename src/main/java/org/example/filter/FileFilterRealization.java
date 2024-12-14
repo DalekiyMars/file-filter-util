@@ -22,10 +22,10 @@ public class FileFilterRealization {
         put("-s", new GenericFlagHandler("shortStats", false));
         put("-f", new GenericFlagHandler("fullStats", false));
     }};
-    // Context to store parsed data
+
+    // Получаемые записи
     private final Map<String, Object> context = new HashMap<>();
 
-    // List to store files
     private final List<String> files = new ArrayList<>();
 
     public void handleArgs(String[] args){
@@ -41,7 +41,7 @@ public class FileFilterRealization {
             }
         }
 
-        // Display the results
+        // Выводим результаты
         System.out.println(contextToString());
         System.out.println("Files: " + files);
 
@@ -54,12 +54,12 @@ public class FileFilterRealization {
     }
 
     /**
-     * Processes the provided values and categorizes them into integers, floats, and strings.
+     * Обрабатывает предоставленные значения и классифицирует их на целые числа, числа с плавающей точкой и строки.
      *
-     * @param values  The list of values to process.
-     * @param context The context containing configuration options.
+     * @param values  Список обрабатываемых значений.
+     * @param context Контекст, содержащий параметры конфигурации.
      */
-    private static void processValues(List<String> values, Map<String, Object> context) {
+    public static void processValues(List<String> values, Map<String, Object> context) {
         List<Integer> integers = new ArrayList<>();
         List<Float> floats = new ArrayList<>();
         List<String> strings = new ArrayList<>();
@@ -95,5 +95,13 @@ public class FileFilterRealization {
             sb.append("\n");
         }
         return sb.toString();
+    }
+
+    public Map<String, Object> getContext() {
+        return this.context;
+    }
+
+    public List<String> getFiles() {
+        return this.files;
     }
 }

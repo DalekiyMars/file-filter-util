@@ -3,11 +3,11 @@ import java.util.*;
 
 public interface FlagHandler {
     /**
-     * Processes a specific flag from the command-line arguments.
+     * Обрабатывает определенный флаг из аргументов командной строки.
      *
-     * @param args    The list of command-line arguments.
-     * @param index   The index of the current flag in the arguments list.
-     * @param context A map to store processed flag data.
+     * @param args    Список аргументов
+     * @param index   Индекс аргумента в списке
+     * @param context Мапа для хранения обработанных данных флагов.
      */
     void handle(List<String> args, int index, Map<String, Object> context);
 }

@@ -10,8 +10,15 @@ repositories {
 }
 
 dependencies {
-    testImplementation platform('org.junit:junit-bom:5.9.1')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
+    // JUnit 5 для тестирования
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
+
+    // Mockito для мокирования
+    testImplementation 'org.mockito:mockito-core:5.2.0'
+
+
+    // Mockito для мокирования статических методов
+    testImplementation 'org.mockito:mockito-inline:5.2.0'
 }
 
 test {
