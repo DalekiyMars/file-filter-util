@@ -18,7 +18,7 @@ class FileHandlerTest {
 
     @BeforeEach
     void setUp() throws IOException {
-        // Ensure the output directory exists and is clean
+        // Проверяем что директория существует и чистая
         Path dir = Path.of(outputDir);
         Files.createDirectories(dir);
         Files.walk(dir)

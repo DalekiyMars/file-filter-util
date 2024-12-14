@@ -13,6 +13,7 @@ import java.util.Map;
 
 import static org.example.handler.FileHandler.getFileDir;
 import static org.example.handler.FileHandler.readFile;
+import static org.example.handler.StringTypeQualifier.*;
 
 public class FileFilterRealization {
     private final Map<String, FlagHandler> handlers = new HashMap<>(){{
@@ -64,17 +65,15 @@ public class FileFilterRealization {
         List<Float> floats = new ArrayList<>();
         List<String> strings = new ArrayList<>();
 
-        for (String value : values) {
-            try {
+        values.forEach(value -> {
+            if (isInteger(value)) {
                 integers.add(Integer.parseInt(value));
-            } catch (NumberFormatException e1) {
-                try {
-                    floats.add(Float.parseFloat(value));
-                } catch (NumberFormatException e2) {
-                    strings.add(value);
-                }
+            } else if (isDecimal(value) || isScientificNotation(value)) {
+                floats.add(Float.parseFloat(value));
+            } else {
+                strings.add(value);
             }
-        }
+        });
 
         String outputDir = (String) context.getOrDefault("outputDir", getFileDir());
         String prefix = (String) context.getOrDefault("prefix", "output");
