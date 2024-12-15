@@ -1,5 +1,7 @@
-package org.example;
+package org.example.filter;
 
+import org.apache.commons.lang3.math.NumberUtils;
+import org.example.Parameters;
 import org.example.dataConfigs.FloatDataConfig;
 import org.example.dataConfigs.IntDataConfig;
 import org.example.dataConfigs.StringDataConfig;
@@ -22,10 +24,10 @@ public class FileFilterRealization {
         put("-s", new GenericFlagHandler("shortStats", false));
         put("-f", new GenericFlagHandler("fullStats", false));
     }};
-    // Context to store parsed data
+
+    // Получаемые записи
     private final Map<String, Object> context = new HashMap<>();
 
-    // List to store files
     private final List<String> files = new ArrayList<>();
 
     public void handleArgs(String[] args){
@@ -41,7 +43,7 @@ public class FileFilterRealization {
             }
         }
 
-        // Display the results
+        // Выводим результаты
         System.out.println(contextToString());
         System.out.println("Files: " + files);
 
@@ -54,37 +56,40 @@ public class FileFilterRealization {
     }
 
     /**
-     * Processes the provided values and categorizes them into integers, floats, and strings.
+     * Обрабатывает предоставленные значения и классифицирует их на целые числа, числа с плавающей точкой и строки.
      *
-     * @param values  The list of values to process.
-     * @param context The context containing configuration options.
+     * @param values  Список обрабатываемых значений.
+     * @param context Контекст, содержащий параметры конфигурации.
      */
-    private static void processValues(List<String> values, Map<String, Object> context) {
+    public static void processValues(List<String> values, Map<String, Object> context) {
         List<Integer> integers = new ArrayList<>();
         List<Float> floats = new ArrayList<>();
         List<String> strings = new ArrayList<>();
 
-        for (String value : values) {
-            try {
-                integers.add(Integer.parseInt(value));
-            } catch (NumberFormatException e1) {
-                try {
-                    floats.add(Float.parseFloat(value));
-                } catch (NumberFormatException e2) {
-                    strings.add(value);
+        values.forEach(value -> {
+            if (NumberUtils.isCreatable(value)) {
+                if (value.matches("-?\\d+")) { // Проверяем, является ли это целым числом
+                    integers.add(Integer.parseInt(value));
+                } else { // Считаем, что это число с плавающей точкой или экспонентой
+                    floats.add(Float.valueOf(value));
                 }
+            } else {
+                strings.add(value); // Если не число, то это обычная строка
             }
-        }
+        });
 
-        String outputDir = (String) context.getOrDefault("outputDir", getFileDir());
-        String prefix = (String) context.getOrDefault("prefix", "output");
-        boolean append = (boolean) context.getOrDefault("append", false);
-        boolean shortStats = (boolean) context.getOrDefault("shortStats", false);
-        boolean fullStats = (boolean) context.getOrDefault("fullStats", false);
+        Parameters parameters = new Parameters.ParameterBuilder(
+                (String) context.getOrDefault("outputDir", getFileDir()),
+                (String) context.getOrDefault("prefix", "output")
+        ).setAppendMarker((boolean) context.getOrDefault("append", false))
+         .setShortStatsMarker((boolean) context.getOrDefault("shortStats", false))
+         .setAppendMarker((boolean) context.getOrDefault("fullStats", false))
+         .build();
 
-        new IntDataConfig(integers).process(outputDir, prefix, append, shortStats, fullStats);
-        new FloatDataConfig(floats).process(outputDir, prefix, append, shortStats, fullStats);
-        new StringDataConfig(strings).process(outputDir, prefix, append, shortStats, fullStats);
+
+        new IntDataConfig(integers).process(parameters);
+        new FloatDataConfig(floats).process(parameters);
+        new StringDataConfig(strings).process(parameters);
     }
 
     private String contextToString(){
@@ -95,5 +100,13 @@ public class FileFilterRealization {
             sb.append("\n");
         }
         return sb.toString();
+    }
+
+    public Map<String, Object> getContext() {
+        return this.context;
+    }
+
+    public List<String> getFiles() {
+        return this.files;
     }
 }

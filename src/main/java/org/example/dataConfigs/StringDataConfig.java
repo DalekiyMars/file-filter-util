@@ -1,6 +1,7 @@
 package org.example.dataConfigs;
 
-import org.example.Constants;
+import org.example.Parameters;
+import org.example.constants.Constants;
 
 import java.util.Comparator;
 import java.util.List;
@@ -14,22 +15,26 @@ public class StringDataConfig implements DataConfig {
         this.strings = strings;
     }
 
+    public List<String> getStrings(){
+        return this.strings;
+    }
+
     @Override
-    public void process(String outputDir, String prefix, boolean append, boolean shortStats, boolean fullStats) {
+    public void process(Parameters parameters) {
         if (strings.isEmpty()) return;
 
-        String fileName = prefix + Constants.FilePath.STRING_FILE_NAME;
-        writeToFile(outputDir, fileName, strings, append);
+        String fileName = parameters.getPrefix() + Constants.FilePath.STRING_FILE_NAME;
+        writeToFile(parameters.getOutputDir(), fileName, strings, parameters.isAppend());
 
-        if (shortStats) {
+        if (parameters.isShortStats()) {
             System.out.println("Strings: " + strings.size());
         }
 
-        if (fullStats) {
+        if (parameters.isFullStats()) {
             String longest = strings.stream().max(Comparator.comparingInt(String::length)).orElse("");
             String shortest = strings.stream().min(Comparator.comparingInt(String::length)).orElse("");
-            System.out.println("Strings: longest = " + longest + " (length = " + longest.length() + "),\n        " +
-                    "shortest = " + shortest + " (length=" + shortest.length() + ")");
+            System.out.println("Strings: longest = " + longest + " (length = " + longest.length() + "),\n" +
+                    "   shortest = " + shortest + " (length=" + shortest.length() + ")");
         }
     }
 }
