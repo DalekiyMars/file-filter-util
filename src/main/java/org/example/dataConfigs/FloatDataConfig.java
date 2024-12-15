@@ -1,6 +1,6 @@
 package org.example.dataConfigs;
 
-import org.example.Parameters;
+import org.example.common.Parameters;
 import org.example.constants.Constants;
 
 import java.util.Collections;

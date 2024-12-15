@@ -1,7 +1,7 @@
 package org.example.filter;
 
 import org.apache.commons.lang3.math.NumberUtils;
-import org.example.Parameters;
+import org.example.common.Parameters;
 import org.example.dataConfigs.FloatDataConfig;
 import org.example.dataConfigs.IntDataConfig;
 import org.example.dataConfigs.StringDataConfig;
