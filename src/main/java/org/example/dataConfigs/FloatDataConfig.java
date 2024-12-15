@@ -1,6 +1,6 @@
 package org.example.dataConfigs;
 
-import org.example.config.Configuration;
+import org.example.Parameters;
 import org.example.constants.Constants;
 
 import java.util.Collections;
@@ -20,17 +20,17 @@ public class FloatDataConfig implements DataConfig {
     }
 
     @Override
-    public void process(Configuration configuration) {
+    public void process(Parameters parameters) {
         if (floats.isEmpty()) return;
 
-        String fileName = configuration.getPrefix() + Constants.FilePath.FLOAT_FILE_NAME;
-        writeToFile(configuration.getOutputDir(), fileName, floats, configuration.isAppend());
+        String fileName = parameters.getPrefix() + Constants.FilePath.FLOAT_FILE_NAME;
+        writeToFile(parameters.getOutputDir(), fileName, floats, parameters.isAppend());
 
-        if (configuration.isShortStats()) {
+        if (parameters.isShortStats()) {
             System.out.println("Floats: " + floats.size());
         }
 
-        if (configuration.isFullStats()) {
+        if (parameters.isFullStats()) {
             System.out.println("Floats: min = " + Collections.min(floats) + ",\n " +
                     "   max = " + Collections.max(floats) + ",\n " +
                     "   sum = " + floats.stream().mapToDouble(Float::doubleValue).sum() + ",\n " +

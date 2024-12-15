@@ -1,7 +1,7 @@
 package org.example.filter;
 
 import org.apache.commons.lang3.math.NumberUtils;
-import org.example.config.Configuration;
+import org.example.Parameters;
 import org.example.dataConfigs.FloatDataConfig;
 import org.example.dataConfigs.IntDataConfig;
 import org.example.dataConfigs.StringDataConfig;
@@ -78,7 +78,7 @@ public class FileFilterRealization {
             }
         });
 
-        Configuration configuration = new Configuration.ConfigurationBuilder(
+        Parameters parameters = new Parameters.ParameterBuilder(
                 (String) context.getOrDefault("outputDir", getFileDir()),
                 (String) context.getOrDefault("prefix", "output")
         ).setAppendMarker((boolean) context.getOrDefault("append", false))
@@ -87,9 +87,9 @@ public class FileFilterRealization {
          .build();
 
 
-        new IntDataConfig(integers).process(configuration);
-        new FloatDataConfig(floats).process(configuration);
-        new StringDataConfig(strings).process(configuration);
+        new IntDataConfig(integers).process(parameters);
+        new FloatDataConfig(floats).process(parameters);
+        new StringDataConfig(strings).process(parameters);
     }
 
     private String contextToString(){

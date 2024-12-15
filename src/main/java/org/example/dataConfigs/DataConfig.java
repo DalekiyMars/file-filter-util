@@ -1,7 +1,7 @@
 package org.example.dataConfigs;
 
-import org.example.config.Configuration;
+import org.example.Parameters;
 
 public interface DataConfig {
-    void process(Configuration conf);
+    void process(Parameters parameters);
 }

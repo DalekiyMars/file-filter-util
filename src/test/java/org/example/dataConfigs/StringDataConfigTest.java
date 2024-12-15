@@ -1,6 +1,6 @@
 package org.example.dataConfigs;
 
-import org.example.config.Configuration;
+import org.example.Parameters;
 import org.example.constants.Constants;
 import org.example.handler.FileHandler;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,7 +35,7 @@ class StringDataConfigTest {
 
         try (MockedStatic<FileHandler> mockedWriteToFile = Mockito.mockStatic(FileHandler.class)) {
             strDataConfig.process(
-                    new Configuration.ConfigurationBuilder(outputDir, prefix)
+                    new Parameters.ParameterBuilder(outputDir, prefix)
                             .setAppendMarker(false)
                             .setShortStatsMarker(false)
                             .setFullStats(false)
@@ -54,7 +54,7 @@ class StringDataConfigTest {
 
         try {
             strDataConfig.process(
-                    new Configuration.ConfigurationBuilder(outputDir, prefix)
+                    new Parameters.ParameterBuilder(outputDir, prefix)
                     .setAppendMarker(false)
                     .setShortStatsMarker(true)
                     .setFullStats(false)
@@ -77,7 +77,7 @@ class StringDataConfigTest {
         System.setOut(new PrintStream(outContent));
         try (MockedStatic<FileHandler> mockedWriteToFile = Mockito.mockStatic(FileHandler.class)) {
             strDataConfig.process(
-                    new Configuration.ConfigurationBuilder(outputDir, prefix)
+                    new Parameters.ParameterBuilder(outputDir, prefix)
                     .setAppendMarker(false)
                     .setShortStatsMarker(false)
                     .setFullStats(true)

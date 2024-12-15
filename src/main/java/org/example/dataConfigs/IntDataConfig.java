@@ -1,6 +1,6 @@
 package org.example.dataConfigs;
 
-import org.example.config.Configuration;
+import org.example.Parameters;
 import org.example.constants.Constants;
 
 import java.util.Collections;
@@ -20,17 +20,17 @@ public class IntDataConfig implements DataConfig {
     }
 
     @Override
-    public void process(Configuration configuration) {
+    public void process(Parameters parameters) {
         if (integers.isEmpty()) return;
 
-        String fileName = configuration.getPrefix() + Constants.FilePath.INT_FILE_NAME;
-        writeToFile(configuration.getOutputDir(), fileName, integers, configuration.isAppend());
+        String fileName = parameters.getPrefix() + Constants.FilePath.INT_FILE_NAME;
+        writeToFile(parameters.getOutputDir(), fileName, integers, parameters.isAppend());
 
-        if (configuration.isShortStats()) {
+        if (parameters.isShortStats()) {
             System.out.println("Integers: " + integers.size());
         }
 
-        if (configuration.isFullStats()) {
+        if (parameters.isFullStats()) {
             System.out.println("Integers: min = " + Collections.min(integers) + ",\n" +
                     "    max = " + Collections.max(integers) + ",\n" +
                     "    sum = " + integers.stream().mapToInt(Integer::intValue).sum() + ",\n" +
