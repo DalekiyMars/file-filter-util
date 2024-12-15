@@ -1,5 +1,6 @@
 package org.example.dataConfigs;
 
+import org.example.config.Configuration;
 import org.example.constants.Constants;
 
 import java.util.Comparator;
@@ -19,17 +20,17 @@ public class StringDataConfig implements DataConfig {
     }
 
     @Override
-    public void process(String outputDir, String prefix, boolean append, boolean shortStats, boolean fullStats) {
+    public void process(Configuration configuration) {
         if (strings.isEmpty()) return;
 
-        String fileName = prefix + Constants.FilePath.STRING_FILE_NAME;
-        writeToFile(outputDir, fileName, strings, append);
+        String fileName = configuration.getPrefix() + Constants.FilePath.STRING_FILE_NAME;
+        writeToFile(configuration.getOutputDir(), fileName, strings, configuration.isAppend());
 
-        if (shortStats) {
+        if (configuration.isShortStats()) {
             System.out.println("Strings: " + strings.size());
         }
 
-        if (fullStats) {
+        if (configuration.isFullStats()) {
             String longest = strings.stream().max(Comparator.comparingInt(String::length)).orElse("");
             String shortest = strings.stream().min(Comparator.comparingInt(String::length)).orElse("");
             System.out.println("Strings: longest = " + longest + " (length = " + longest.length() + "),\n" +

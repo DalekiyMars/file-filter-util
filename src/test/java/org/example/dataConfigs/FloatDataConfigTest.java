@@ -1,5 +1,6 @@
 package org.example.dataConfigs;
 
+import org.example.config.Configuration;
 import org.example.constants.Constants;
 import org.example.handler.FileHandler;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,7 +33,12 @@ class FloatDataConfigTest {
         floatDataConfig = new FloatDataConfig(Collections.emptyList());
 
         try (MockedStatic<FileHandler> mockedWriteToFile = Mockito.mockStatic(FileHandler.class)) {
-            floatDataConfig.process(outputDir, prefix, false, false, false);
+            floatDataConfig.process(
+                    new Configuration.ConfigurationBuilder(outputDir, prefix)
+                    .setAppendMarker(false)
+                    .setShortStatsMarker(false)
+                    .setFullStats(false)
+                    .build());
 
             // Проверка что метод не вызывается
             mockedWriteToFile.verifyNoInteractions();
@@ -45,7 +51,12 @@ class FloatDataConfigTest {
         System.setOut(new PrintStream(outContent));
 
         try {
-            floatDataConfig.process(outputDir, prefix, false, true, false);
+            floatDataConfig.process(
+                    new Configuration.ConfigurationBuilder(outputDir, prefix)
+                    .setAppendMarker(false)
+                    .setShortStatsMarker(true)
+                    .setFullStats(false)
+                    .build());
 
             // Ожидаемый вывод
             String expectedStats = "Floats: 3";
@@ -63,7 +74,12 @@ class FloatDataConfigTest {
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
         try (MockedStatic<FileHandler> mockedWriteToFile = Mockito.mockStatic(FileHandler.class)) {
-            floatDataConfig.process(outputDir, prefix, false, false, true);
+            floatDataConfig.process(
+                    new Configuration.ConfigurationBuilder(outputDir, prefix)
+                    .setAppendMarker(false)
+                    .setShortStatsMarker(false)
+                    .setFullStats(true)
+                    .build());
 
             // Проверка что запись вызывается с правильными параметрами
             mockedWriteToFile.verify(() -> writeToFile(outputDir, prefix + Constants.FilePath.FLOAT_FILE_NAME, floatDataConfig.getFloats(), false));

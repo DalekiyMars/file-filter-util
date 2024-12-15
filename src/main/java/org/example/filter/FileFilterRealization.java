@@ -1,6 +1,7 @@
 package org.example.filter;
 
 import org.apache.commons.lang3.math.NumberUtils;
+import org.example.config.Configuration;
 import org.example.dataConfigs.FloatDataConfig;
 import org.example.dataConfigs.IntDataConfig;
 import org.example.dataConfigs.StringDataConfig;
@@ -77,15 +78,18 @@ public class FileFilterRealization {
             }
         });
 
-        String outputDir = (String) context.getOrDefault("outputDir", getFileDir());
-        String prefix = (String) context.getOrDefault("prefix", "output");
-        boolean append = (boolean) context.getOrDefault("append", false);
-        boolean shortStats = (boolean) context.getOrDefault("shortStats", false);
-        boolean fullStats = (boolean) context.getOrDefault("fullStats", false);
+        Configuration configuration = new Configuration.ConfigurationBuilder(
+                (String) context.getOrDefault("outputDir", getFileDir()),
+                (String) context.getOrDefault("prefix", "output")
+        ).setAppendMarker((boolean) context.getOrDefault("append", false))
+         .setShortStatsMarker((boolean) context.getOrDefault("shortStats", false))
+         .setAppendMarker((boolean) context.getOrDefault("fullStats", false))
+         .build();
 
-        new IntDataConfig(integers).process(outputDir, prefix, append, shortStats, fullStats);
-        new FloatDataConfig(floats).process(outputDir, prefix, append, shortStats, fullStats);
-        new StringDataConfig(strings).process(outputDir, prefix, append, shortStats, fullStats);
+
+        new IntDataConfig(integers).process(configuration);
+        new FloatDataConfig(floats).process(configuration);
+        new StringDataConfig(strings).process(configuration);
     }
 
     private String contextToString(){

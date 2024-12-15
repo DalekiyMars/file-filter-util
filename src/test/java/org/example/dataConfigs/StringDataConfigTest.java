@@ -1,5 +1,6 @@
 package org.example.dataConfigs;
 
+import org.example.config.Configuration;
 import org.example.constants.Constants;
 import org.example.handler.FileHandler;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,7 +34,13 @@ class StringDataConfigTest {
         strDataConfig = new StringDataConfig(Collections.emptyList());
 
         try (MockedStatic<FileHandler> mockedWriteToFile = Mockito.mockStatic(FileHandler.class)) {
-            strDataConfig.process(outputDir, prefix, false, false, false);
+            strDataConfig.process(
+                    new Configuration.ConfigurationBuilder(outputDir, prefix)
+                            .setAppendMarker(false)
+                            .setShortStatsMarker(false)
+                            .setFullStats(false)
+                            .build()
+            );
 
             // Проверка что метод не вызывается
             mockedWriteToFile.verifyNoInteractions();
@@ -46,7 +53,12 @@ class StringDataConfigTest {
         System.setOut(new PrintStream(outContent));
 
         try {
-            strDataConfig.process(outputDir, prefix, false, true, false);
+            strDataConfig.process(
+                    new Configuration.ConfigurationBuilder(outputDir, prefix)
+                    .setAppendMarker(false)
+                    .setShortStatsMarker(true)
+                    .setFullStats(false)
+                    .build());
 
             // Ожидаемый вывод
             String expectedStats = "Strings: 3";
@@ -64,7 +76,12 @@ class StringDataConfigTest {
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
         try (MockedStatic<FileHandler> mockedWriteToFile = Mockito.mockStatic(FileHandler.class)) {
-            strDataConfig.process(outputDir, prefix, false, false, true);
+            strDataConfig.process(
+                    new Configuration.ConfigurationBuilder(outputDir, prefix)
+                    .setAppendMarker(false)
+                    .setShortStatsMarker(false)
+                    .setFullStats(true)
+                    .build());
 
             // Проверка что запись вызывается с правильными параметрами
             mockedWriteToFile.verify(() -> writeToFile(outputDir, prefix + Constants.FilePath.STRING_FILE_NAME, strDataConfig.getStrings(), false));
