@@ -1,4 +1,4 @@
-package org.example.entryPoint;
+package org.example;
 
 import org.example.filter.FileFilterRealization;
 

@@ -1,5 +1,6 @@
 package org.example.filter;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import org.example.dataConfigs.FloatDataConfig;
 import org.example.dataConfigs.IntDataConfig;
 import org.example.dataConfigs.StringDataConfig;
@@ -13,7 +14,6 @@ import java.util.Map;
 
 import static org.example.handler.FileHandler.getFileDir;
 import static org.example.handler.FileHandler.readFile;
-import static org.example.handler.StringTypeQualifier.*;
 
 public class FileFilterRealization {
     private final Map<String, FlagHandler> handlers = new HashMap<>(){{
@@ -66,12 +66,14 @@ public class FileFilterRealization {
         List<String> strings = new ArrayList<>();
 
         values.forEach(value -> {
-            if (isInteger(value)) {
-                integers.add(Integer.parseInt(value));
-            } else if (isDecimal(value) || isScientificNotation(value)) {
-                floats.add(Float.parseFloat(value));
+            if (NumberUtils.isCreatable(value)) {
+                if (value.matches("-?\\d+")) { // Проверяем, является ли это целым числом
+                    integers.add(Integer.parseInt(value));
+                } else { // Считаем, что это число с плавающей точкой или экспонентой
+                    floats.add(Float.valueOf(value));
+                }
             } else {
-                strings.add(value);
+                strings.add(value); // Если не число, то это обычная строка
             }
         });
 
